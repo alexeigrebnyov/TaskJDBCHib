@@ -66,35 +66,33 @@ public class Util {
         prop.setProperty("hibernate.connection.password", "PASSFORJAZZDATAMANAge__1213455}[");
         prop.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
         prop.setProperty("hbm2ddl.auto", "create");
-        prop.setProperty("show_sql", "true"); //If you wish to see the generated sql query
+        prop.setProperty("show_sql", "true");
+        prop.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        prop.setProperty("hibernate.hbm2ddl.auto", "update");
+
 
         SessionFactory sessionFactory = new Configuration()
                .addProperties(prop).addAnnotatedClass(User.class)
                 .buildSessionFactory();
+
         //Session session = sessionFactory.openSession();
         //Transaction transaction = session.beginTransaction();
         //session.reconnect(connection);
 
         return sessionFactory;
+        /*
 
-    }
-    /*
 
-    public static SessionFactory getSessionFactory() {
-        SessionFactory sessionFactory = null;
 
-           try {
                Configuration configuration = new Configuration().configure();
-               configuration.addAnnotatedClass(User.class);
+               configuration.addProperties(prop).addAnnotatedClass(User.class);
                StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-               sessionFactory = configuration.buildSessionFactory(builder.build());
+               SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
 
-           } catch (Exception e) {
-               System.out.println("Исключение!" + e);
-           }
 
-       return sessionFactory;
-   }*/
+
+       return sessionFactory; */
+   }
 
 }
 

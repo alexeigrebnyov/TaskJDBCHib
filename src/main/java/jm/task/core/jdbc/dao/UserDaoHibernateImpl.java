@@ -28,9 +28,9 @@ public class UserDaoHibernateImpl implements UserDao {
         try {
             Session session = sessionFactory1.openSession();
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("CREATE TABLE IF NOT EXISTS user1" +
-                    "(Id INT PRIMARY KEY AUTO_INCREMENT, nameUser VARCHAR(20), " +
-                    "lastNameUser VARCHAR(20), ageUser INT)").executeUpdate();
+            session.createSQLQuery("CREATE TABLE IF NOT EXISTS user" +
+                    "(Id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(20), " +
+                    "lastName VARCHAR(20), age INT)").executeUpdate();
 
             transaction.commit();
             session.close();
@@ -46,7 +46,7 @@ public class UserDaoHibernateImpl implements UserDao {
         try {
             Session session = sessionFactory1.openSession();
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("DROP TABLE IF EXISTS user1").executeUpdate();
+            session.createSQLQuery("DROP TABLE IF EXISTS user").executeUpdate();
 
             transaction.commit();
             session.close();
@@ -62,8 +62,7 @@ public class UserDaoHibernateImpl implements UserDao {
         try {
             Session session = sessionFactory1.openSession();
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("INSERT user1 (nameUser, lastNameUser, ageUser)" +
-                    "VALUES (" + "'" + name + "'" + ", " + "'" + lastName + "'" + "," + age + ")").executeUpdate();
+            session.save(new User(name, lastName, age));
             System.out.println("User с именем –" + name + " добавлен в базу данных");
 
             transaction.commit();
@@ -80,7 +79,7 @@ public class UserDaoHibernateImpl implements UserDao {
         try {
             Session session = sessionFactory1.openSession();
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("DELETE FROM user1 WHERE Id =" + id).executeUpdate();
+            session.createQuery("delete from User where id="+id).executeUpdate();
 
             transaction.commit();
             session.close();
@@ -94,11 +93,12 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-       List<User> allUsers = new ArrayList<>();
+        List<User> allUsers = new ArrayList<>();
         try {
             Session session = sessionFactory1.openSession();
             Transaction transaction = session.beginTransaction();
-            List<Object[]> allUsers1 = session.createSQLQuery("SELECT * FROM user1")
+            allUsers = session.createQuery("From User").list();
+            /*List<Object[]> allUsers1 = session.createSQLQuery("SELECT * FROM user1")
                     .addScalar("id", LongType.INSTANCE)
                     .addScalar( "nameUser", StringType.INSTANCE )
                     .addScalar( "lastNameUser", StringType.INSTANCE )
@@ -114,6 +114,14 @@ public class UserDaoHibernateImpl implements UserDao {
         System.out.println(ex);
     }
         return allUsers;
+    }*/
+            transaction.commit();
+            session.close();
+        }
+        catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return allUsers;
     }
 
     @Override
@@ -121,7 +129,7 @@ public class UserDaoHibernateImpl implements UserDao {
         try {
             Session session = sessionFactory1.openSession();
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("DELETE from user1").executeUpdate();
+            session.createQuery("DELETE from User").executeUpdate();
 
             transaction.commit();
             session.close();

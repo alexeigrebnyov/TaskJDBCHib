@@ -12,6 +12,7 @@ public class Main {
        UserServiceImpl userService = new UserServiceImpl();
 
         userService.createUsersTable();
+        userService.cleanUsersTable();
         User[] users = new User[]{
                 new User("Ivan", "Alexeev", (byte) 15),
                 new User("Christopher", "Nolan", (byte) 65),
